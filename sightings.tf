@@ -53,30 +53,31 @@ resource "aws_s3_bucket_policy" "gimbal-sightings" {
   policy = "${data.aws_iam_policy_document.gimbal-sightings.json}"
 }
 
-resource "aws_s3_bucket_notification" "sightings-notifications" {
-  bucket = "${aws_s3_bucket.gimbal-sightings.id}"
+# resource "aws_s3_bucket_notification" "sightings-notifications" {
+#   bucket = "${aws_s3_bucket.gimbal-sightings.id}"
+#
+#   queue {
+#     queue_arn     = "${aws_sqs_queue.fluentd-s3-input.arn}"
+#     id            = "dev-sightings-events"
+#     events        = ["s3:ObjectCreated:*"]
+#     filter_prefix = "shared_dev/"
+#     filter_suffix = ".gz"
+#   }
+#
+#   queue {
+#     queue_arn     = "${aws_sqs_queue.stage-fluentd-s3-input.arn}"
+#     id            = "stage-sightings-events"
+#     events        = ["s3:ObjectCreated:*"]
+#     filter_prefix = "awsstage/"
+#     filter_suffix = ".gz"
+#   }
+#
+#   queue {
+#     queue_arn     = "${aws_sqs_queue.prod-fluentd-s3-input.arn}"
+#     id            = "prod-sightings-events"
+#     events        = ["s3:ObjectCreated:*"]
+#     filter_prefix = "awsprod/"
+#     filter_suffix = ".gz"
+#   }
+# }
 
-  queue {
-    queue_arn     = "${aws_sqs_queue.fluentd-s3-input.arn}"
-    id            = "dev-sightings-events"
-    events        = ["s3:ObjectCreated:*"]
-    filter_prefix = "shared_dev/"
-    filter_suffix = ".gz"
-  }
-
-  queue {
-    queue_arn     = "${aws_sqs_queue.stage-fluentd-s3-input.arn}"
-    id            = "stage-sightings-events"
-    events        = ["s3:ObjectCreated:*"]
-    filter_prefix = "awsstage/"
-    filter_suffix = ".gz"
-  }
-
-  queue {
-    queue_arn     = "${aws_sqs_queue.prod-fluentd-s3-input.arn}"
-    id            = "prod-sightings-events"
-    events        = ["s3:ObjectCreated:*"]
-    filter_prefix = "awsprod/"
-    filter_suffix = ".gz"
-  }
-}
